@@ -41,3 +41,14 @@ class Circle:
         else:
             print(f"This circle is already owned by{self.owner}")
             return False  # failed to set owner
+
+
+circles = []
+
+for row in range(1, 7):
+    for col in range(1, 8):
+        letters_list = ["a", "b", "c", "d", "e", "f", "g"]
+        letter = letters_list[col - 1]
+        number = row
+        circle = Circle(letter, number, row, col)
+        circles.append(circle)
