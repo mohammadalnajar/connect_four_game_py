@@ -215,10 +215,8 @@ def select_circle():
                 if circle.letter == circle_letter and circle.owner is None:
                     col_circles.append(circle)
             if len(col_circles) == 0:
-                print(1)
                 raise ValueError
             else:
-                print(2)
                 result = player.add_circle(col_circles[-1])
                 if result:
                     Game.turn = 2 if Game.turn == 1 else 1
