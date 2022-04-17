@@ -132,9 +132,14 @@ def print_circles():
         print("-" * 60)
 
 
-print("=" * 60)
-print_circles()
-print("=" * 60)
+def print_divider():
+    print("-" * 60)
+
+
+print_divider()
+
+
+print_divider()
 
 players = []
 player_one = Player()
@@ -151,8 +156,13 @@ def introduce_players():
     )
 
 
+print_divider()
+
 introduce_players()
 
+print_divider()
+print_circles()
+print_divider()
 print(yellow_color + "Warning!" + reset_color)
 print(red_color + "Failure!" + reset_color)
 print(green_color + "Success!" + reset_color)
