@@ -230,7 +230,6 @@ def select_circle():
                 result = player.add_circle(col_circles[-1])
                 if result:
                     Game.turn = 2 if Game.turn == 1 else 1
-                    print_circles()
                 break
         except ValueError:  # if the column is full
             msg = error["msg"] if "msg" in error else "invalid input"
@@ -242,6 +241,10 @@ def select_circle():
 
 while Game.game_is_running:
     select_circle()
+    print(chr(27) + "[2j")
+    print("\033c")
+    print("\x1bc")
+    print_circles()
 
 # restart the game
 # def restart_game():
