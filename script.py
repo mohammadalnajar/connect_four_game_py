@@ -5,6 +5,7 @@ red_color = "\x1b[6;37;41m"
 yellow_color = "\x1b[6;30;43m"
 blue_color = "\x1b[1;37;44m"
 reset_color = "\x1b[0m"  # reset color
+letters_list = ["a", "b", "c", "d", "e", "f", "g"]
 
 
 def create_dict():
@@ -43,7 +44,6 @@ class Circle:
 def fill_in_circles():
     for row in range(1, 7):  # for each row
         for col in range(1, 8):  # for each column
-            letters_list = ["a", "b", "c", "d", "e", "f", "g"]
             letter = letters_list[col - 1]
             number = row
             circle = Circle(letter, number, row, col)  # create circle
@@ -55,18 +55,28 @@ fill_in_circles()
 
 
 def print_circles():
-    for row in range(1, 7):
+    for row in range(0, 7):
         str_to_print = ""
-        for circle in circles:
-            if circle.row == row:
-                circle_to_print = f"{circle.color} {circle} {reset_color}"
-                str_to_print += circle_to_print
-                str_to_print += " "
+        if row == 0:
+            for letter in letters_list:
+                if not letter == "a":
+                    str_to_print += " <-> "
+                str_to_print += f"{yellow_color} {letter.upper()}  {reset_color}"
+        else:
+            idx = 0
+            for circle in circles:
+
+                if circle.row == row:
+                    if not idx % 7 == 0:
+                        str_to_print += " <-> "
+                    circle_to_print = f"{circle.color} {circle} {reset_color}"
+                    str_to_print += circle_to_print
+                idx += 1
         print(str_to_print)
-        print("-" * 40)
+        print("-" * 60)
 
 
-print("=" * 40)
+print("=" * 60)
 print_circles()
 
 print(yellow_color + "Warning!" + reset_color)
