@@ -5,14 +5,14 @@ red_color = "\x1b[6;37;41m"
 yellow_color = "\x1b[6;30;43m"
 blue_color = "\x1b[1;37;44m"
 reset_color = "\x1b[0m"  # reset color
-letters_list = ["a", "b", "c", "d", "e", "f", "g"]
+letters_list = ["A", "B", "C", "D", "E", "F", "G"]
 
 
 def create_dict():
     ran_letter_idx = random.randint(0, 6)
     ran_number_idx = random.randint(0, 5)
     dict = {}
-    letters_list = ["a", "b", "c", "d", "e", "f", "g"]
+    letters_list = ["A", "B", "C", "D", "E", "F", "G"]
     numbers_list = [1, 2, 3, 4, 5, 6]
     dict[letters_list[ran_letter_idx]] = numbers_list[ran_number_idx]
     return dict
@@ -59,13 +59,12 @@ def print_circles():
         str_to_print = ""
         if row == 0:
             for letter in letters_list:
-                if not letter == "a":
+                if not letter == "A":
                     str_to_print += " <-> "
                 str_to_print += f"{yellow_color} {letter.upper()}  {reset_color}"
         else:
             idx = 0
             for circle in circles:
-
                 if circle.row == row:
                     if not idx % 7 == 0:
                         str_to_print += " <-> "
