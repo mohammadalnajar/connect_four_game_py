@@ -20,6 +20,7 @@ def create_dict():
 
 class Game:
     turn = 1
+    game_is_running = True
 
     def __init__(self):
         self.winner = None
@@ -161,7 +162,7 @@ def introduce_players():
 
 print_divider()
 
-game = Game()
+Game()
 
 players = []
 
@@ -179,19 +180,15 @@ print_divider()
 
 introduce_players()
 
+print_divider()
+print_divider()
+print_divider()
+
 print_circles()
 
 
-game_is_running = True
-
-
 def select_circle():
-    player = None
-    if Game.turn == 1:
-        player = player_one
-
-    elif Game.turn == 2:
-        player = player_two
+    player = player_one if Game.turn == 1 else player_two
 
     circle = input(
         f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
@@ -221,20 +218,12 @@ def select_circle():
                 print_circles()
 
 
-while game_is_running:
+while Game.game_is_running:
     select_circle()
 
-    # while True:
-    #     print("Select a circle: ")
-    #     circle_to_select = input("Enter a circle: ")
-    #     if circle_to_select.isalpha() and circle_to_select.upper() in letters_list:
-    #         circle_to_select = circle_to_select.upper()
-    #         for circle in circles:
-    #             if circle.letter == circle_to_select:
-    #                 return circle
-    #     else:
-    #         print("Please enter a valid circle")
-    #         continue
+# restart the game
+# def restart_game():
+
 
 print_divider()
 
