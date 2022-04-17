@@ -43,6 +43,7 @@ class Circle:
 
 class Player:
     count = 1  # count of players
+    taken_colors = []
 
     def __init__(self) -> None:
         name = input(f"Enter a name for player {Player.count}: ")
@@ -58,25 +59,36 @@ class Player:
                 name = input(f"Enter a name for player {Player.count}: ")
 
         self.name = name
-
-        color = input(
-            f"Enter a color for player {Player.count} ('g' for green / 'r' for red ): "
-        )
-        # check if the color is valid
-        while True:
-            try:
-                if color.isnumeric() or color.lower() not in ["g", "r", "red", "green"]:
-                    raise ValueError
-                break
-            except ValueError:
-                print("Please enter a valid color(only 'g' or 'r' is allowed)")
-                color = input(
-                    f"Enter a color for player {Player.count} ('g' for green / 'r' for red ): "
-                )
+        color = ""
+        if len(Player.taken_colors) > 0:
+            if "red" in Player.taken_colors or "r" in Player.taken_colors:
+                color = "green"
+            else:
+                color = "red"
+        else:
+            color = input(
+                f"Enter a color for player {Player.count} ('g' for green / 'r' for red ): "
+            )
+            # check if the color is valid
+            while True:
+                try:
+                    if color.isnumeric() or color.lower() not in [
+                        "g",
+                        "r",
+                        "red",
+                        "green",
+                    ]:
+                        raise ValueError
+                    break
+                except ValueError:
+                    print("Please enter a valid color(only 'g' or 'r' is allowed)")
+                    color = input(
+                        f"Enter a color for player {Player.count} ('g' for green / 'r' for red ): "
+                    )
         self.color = green_color if color == "g" or color == "green" else red_color
 
         self.color_name = "green" if color == "g" or color == "green" else "red"
-
+        Player.taken_colors.append(self.color_name)
         self.circles = []
 
         Player.count += 1
@@ -124,8 +136,9 @@ print_circles()
 print("=" * 60)
 
 player_one = Player()
-
 print(player_one)
+player_two = Player()
+print(player_two)
 
 print(yellow_color + "Warning!" + reset_color)
 print(red_color + "Failure!" + reset_color)
