@@ -54,6 +54,15 @@ circles = []
 fill_in_circles()
 
 
+def print_circles():
+    for circle in circles:
+        print(f"{circle.color} {circle} {reset_color}")
+        print("-" * 20)
+
+
+print("====================")
+print_circles()
+
 print(yellow_color + "Warning!" + reset_color)
 print(red_color + "Failure!" + reset_color)
 print(green_color + "Success!" + reset_color)
