@@ -1,11 +1,11 @@
 import random
 
-green_color = "\x1b[6;30;42m"
-red_color = "\x1b[6;37;41m"
-yellow_color = "\x1b[6;30;43m"
-blue_color = "\x1b[1;37;44m"
+green_color = "\x1b[6;30;42m"  # green color
+red_color = "\x1b[6;37;41m"  # red color
+yellow_color = "\x1b[6;30;43m"  # yellow color
+blue_color = "\x1b[1;37;44m"  # blue color
 reset_color = "\x1b[0m"  # reset color
-letters_list = ["A", "B", "C", "D", "E", "F", "G"]
+letters_list = ["A", "B", "C", "D", "E", "F", "G"]  # list of letters for columns
 
 
 def create_dict():
@@ -16,6 +16,13 @@ def create_dict():
     numbers_list = [1, 2, 3, 4, 5, 6]
     dict[letters_list[ran_letter_idx]] = numbers_list[ran_number_idx]
     return dict
+
+
+class Game:
+    turn = 1
+
+    def __init__(self):
+        self.winner = None
 
 
 class Circle:
@@ -37,7 +44,10 @@ class Circle:
 
             return True  # successfully set owner
         else:
-            print(f"This circle is already owned by{self.owner}")
+            print(
+                f"This circle is already owned by {self.color} {self.owner.name} {reset_color}"
+            )
+
             return False  # failed to set owner
 
 
@@ -96,6 +106,13 @@ class Player:
     def __repr__(self) -> str:
         return f"The player {self.name} has the color {self.color} {self.color_name} {reset_color}"
 
+    def add_circle(self, circle):
+        if circle.set_owner(self):
+            self.circles.append(circle)
+            return True
+        else:
+            return False
+
 
 def fill_in_circles():
     for row in range(1, 7):  # for each row
@@ -136,20 +153,6 @@ def print_divider():
     print("-" * 60)
 
 
-print_divider()
-
-
-print_divider()
-
-players = []
-player_one = Player()
-players.append(player_one)
-print(player_one)
-player_two = Player()
-players.append(player_two)
-print(player_two)
-
-
 def introduce_players():
     print(
         f"{player_one.color} {player_one.name} {reset_color} and {player_two.color} {player_two.name} {reset_color} are playing the game"
@@ -158,11 +161,87 @@ def introduce_players():
 
 print_divider()
 
-introduce_players()
+game = Game()
+
+players = []
+
+player_one = Player()
+players.append(player_one)
+print(player_one)
 
 print_divider()
-print_circles()
+
+player_two = Player()
+players.append(player_two)
+print(player_two)
+
 print_divider()
+
+introduce_players()
+
+print_circles()
+
+
+game_is_running = True
+
+
+def select_circle():
+    player = None
+    if Game.turn == 1:
+        player = player_one
+
+    elif Game.turn == 2:
+        player = player_two
+
+    circle = input(
+        f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
+    )
+
+    while True:
+        try:
+            if (
+                not type(circle[0]) is str or not circle[1].isnumeric()
+            ):  # check if the input is valid
+                raise ValueError
+            break
+        except ValueError:
+            print("Please enter a valid circle(enter letter and number)")
+            circle = input(
+                f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
+            )
+
+    circle_letter = circle[0].upper()
+    circle_number = int(circle[1])
+
+    for circle in circles:
+        if circle.letter == circle_letter and circle.number == circle_number:
+            result = player.add_circle(circle)
+            if result:
+                Game.turn = 2 if Game.turn == 1 else 1
+                print_circles()
+
+
+while game_is_running:
+    select_circle()
+
+    # while True:
+    #     print("Select a circle: ")
+    #     circle_to_select = input("Enter a circle: ")
+    #     if circle_to_select.isalpha() and circle_to_select.upper() in letters_list:
+    #         circle_to_select = circle_to_select.upper()
+    #         for circle in circles:
+    #             if circle.letter == circle_to_select:
+    #                 return circle
+    #     else:
+    #         print("Please enter a valid circle")
+    #         continue
+
+print_divider()
+
+
+print_divider()
+
+
 print(yellow_color + "Warning!" + reset_color)
 print(red_color + "Failure!" + reset_color)
 print(green_color + "Success!" + reset_color)
