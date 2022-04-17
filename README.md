@@ -1,1 +1,1 @@
-# test
+# Connect Four game
