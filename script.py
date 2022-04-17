@@ -194,29 +194,41 @@ def select_circle():
         f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
     )
 
-    while True:
+    while True:  # check if column is full
         try:
-            if not type(circle[0]) is str:  # check if the input is valid
+            while True:  # check if the input is valid
+                try:
+                    if not type(circle[0]) is str:
+                        raise ValueError
+                    break
+                except ValueError:  # if the input is not valid
+                    print("Please enter a valid circle(enter a letter)")
+                    circle = input(
+                        f"{player.color} {player.name} {reset_color}, select a circle (enter a letter): "
+                    )
+
+            circle_letter = circle[0].upper()
+
+            col_circles = []
+
+            for circle in circles:
+                if circle.letter == circle_letter and circle.owner is None:
+                    col_circles.append(circle)
+            if len(col_circles) == 0:
+                print(1)
                 raise ValueError
-            break
-        except ValueError:
-            print("Please enter a valid circle(enter a letter)")
+            else:
+                print(2)
+                result = player.add_circle(col_circles[-1])
+                if result:
+                    Game.turn = 2 if Game.turn == 1 else 1
+                    print_circles()
+                break
+        except ValueError:  # if the column is full
+            print("The selected column is full")
             circle = input(
-                f"{player.color} {player.name} {reset_color}, select a circle (enter a letter): "
+                f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
             )
-
-    circle_letter = circle[0].upper()
-
-    col_circles = []
-
-    for circle in circles:
-        if circle.letter == circle_letter and circle.owner is None:
-            col_circles.append(circle)
-
-    result = player.add_circle(col_circles[-1])
-    if result:
-        Game.turn = 2 if Game.turn == 1 else 1
-        print_circles()
 
 
 while Game.game_is_running:
