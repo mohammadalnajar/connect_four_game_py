@@ -19,18 +19,20 @@ def create_dict():
 
 class Circle:
     def __init__(self, letter, number, row, col) -> None:
-        self.letter = letter
-        self.number = number
+        self.letter = letter  # letter
+        self.number = number  # number
         self.row = row
         self.col = col
-        self.owner = None
+        self.owner = None  # owner of the circle
+        self.color = blue_color  # color of the circle
 
     def __repr__(self) -> str:
         return f"{self.letter}{self.number}"
 
     def set_owner(self, player):
-        if self.owner is None:
-            self.owner = player
+        if self.owner is None:  # if the circle is not owned
+            self.owner = player  # set owner
+            self.color = player.color  # set color
 
             return True  # successfully set owner
         else:
@@ -38,18 +40,18 @@ class Circle:
             return False  # failed to set owner
 
 
+def fill_in_circles():
+    for row in range(1, 7):  # for each row
+        for col in range(1, 8):  # for each column
+            letters_list = ["a", "b", "c", "d", "e", "f", "g"]
+            letter = letters_list[col - 1]
+            number = row
+            circle = Circle(letter, number, row, col)  # create circle
+            circles.append(circle)
+
+
 circles = []
-
-for row in range(1, 7):
-    for col in range(1, 8):
-        letters_list = ["a", "b", "c", "d", "e", "f", "g"]
-        letter = letters_list[col - 1]
-        number = row
-        circle = Circle(letter, number, row, col)
-        circles.append(circle)
-
-print("====================")
-print(circles)
+fill_in_circles()
 
 
 print(yellow_color + "Warning!" + reset_color)
