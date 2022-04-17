@@ -1,9 +1,9 @@
 import random
 
 green_color = "\x1b[6;30;42m"
-red_color = "\x1b[6;30;41m"
+red_color = "\x1b[6;37;41m"
 yellow_color = "\x1b[6;30;43m"
-blue_color = "\x1b[6;30;44m"
+blue_color = "\x1b[1;37;44m"
 reset_color = "\x1b[0m"  # reset color
 
 
