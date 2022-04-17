@@ -55,12 +55,18 @@ fill_in_circles()
 
 
 def print_circles():
-    for circle in circles:
-        print(f"{circle.color} {circle} {reset_color}")
-        print("-" * 20)
+    for row in range(1, 7):
+        str_to_print = ""
+        for circle in circles:
+            if circle.row == row:
+                circle_to_print = f"{circle.color} {circle} {reset_color}"
+                str_to_print += circle_to_print
+                str_to_print += " "
+        print(str_to_print)
+        print("-" * 40)
 
 
-print("====================")
+print("=" * 40)
 print_circles()
 
 print(yellow_color + "Warning!" + reset_color)
