@@ -190,7 +190,7 @@ print_circles()
 def select_circle():
     player = player_one if Game.turn == 1 else player_two
 
-    circle = input(
+    letter = input(
         f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
     )
 
@@ -198,23 +198,33 @@ def select_circle():
         try:
             while True:  # check if the input is valid
                 try:
-                    if not type(circle[0]) is str:
+                    if not type(letter) is str:
                         raise ValueError
                     break
                 except ValueError:  # if the input is not valid
                     print("Please enter a valid circle(enter a letter)")
-                    circle = input(
+                    letter = input(
                         f"{player.color} {player.name} {reset_color}, select a circle (enter a letter): "
                     )
 
-            circle_letter = circle[0].upper()
+            error = {}
 
+            circle_letter = letter.upper()
+
+            # check if the letter is valid
+            if circle_letter not in letters_list:
+                error["msg"] = "******* The selected letter is not valid *******"
+                raise ValueError
+
+            # get the circles in the column
             col_circles = []
-
             for circle in circles:
                 if circle.letter == circle_letter and circle.owner is None:
                     col_circles.append(circle)
+
+            # check if the column is full
             if len(col_circles) == 0:
+                error["msg"] = "******* The selected column is full *******"
                 raise ValueError
             else:
                 result = player.add_circle(col_circles[-1])
@@ -223,8 +233,9 @@ def select_circle():
                     print_circles()
                 break
         except ValueError:  # if the column is full
-            print("The selected column is full")
-            circle = input(
+            msg = error["msg"] if "msg" in error else "invalid input"
+            print(f"{msg}")
+            letter = input(
                 f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
             )
 
