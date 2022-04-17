@@ -17,11 +17,6 @@ def create_dict():
     return dict
 
 
-test_dict = create_dict()
-
-print(test_dict)
-
-
 class Circle:
     def __init__(self, letter, number, row, col) -> None:
         self.letter = letter
@@ -52,3 +47,12 @@ for row in range(1, 7):
         number = row
         circle = Circle(letter, number, row, col)
         circles.append(circle)
+
+print("====================")
+print(circles)
+
+
+print(yellow_color + "Warning!" + reset_color)
+print(red_color + "Failure!" + reset_color)
+print(green_color + "Success!" + reset_color)
+print(blue_color + "Information!" + reset_color)
