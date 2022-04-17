@@ -107,6 +107,7 @@ def fill_in_circles():
 
 
 circles = []
+
 fill_in_circles()
 
 
@@ -135,10 +136,22 @@ print("=" * 60)
 print_circles()
 print("=" * 60)
 
+players = []
 player_one = Player()
+players.append(player_one)
 print(player_one)
 player_two = Player()
+players.append(player_two)
 print(player_two)
+
+
+def introduce_players():
+    print(
+        f"{player_one.color} {player_one.name} {reset_color} and {player_two.color} {player_two.name} {reset_color} are playing the game"
+    )
+
+
+introduce_players()
 
 print(yellow_color + "Warning!" + reset_color)
 print(red_color + "Failure!" + reset_color)
