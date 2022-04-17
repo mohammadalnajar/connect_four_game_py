@@ -34,4 +34,10 @@ class Circle:
         return f"{self.letter}{self.number}"
 
     def set_owner(self, player):
-        self.owner = player
+        if self.owner is None:
+            self.owner = player
+
+            return True  # successfully set owner
+        else:
+            print(f"This circle is already owned by{self.owner}")
+            return False  # failed to set owner
