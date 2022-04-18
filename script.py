@@ -348,14 +348,37 @@ def check_circles_in_row_vertical(player):
     return is_won
 
 
+def check_circles_in_row_angle(player):
+    is_won = False
+    in_order = True
+    in_row = 1
+    circles = []
+
+    list_numbers_to_compare = (
+        numbers_list[numbers_list.index(player.circles[0].number) :]
+        if len(player.circles) > 0
+        else []
+    )
+    list_letters_to_compare = (
+        letters_list[letters_list.index(player.circles[0].letter) :]
+        if len(player.circles) > 0
+        else []
+    )
+
+    print(list_numbers_to_compare, "list_numbers_to_compare")
+    print(list_letters_to_compare, "list_letters_to_compare")
+
+
 def check_circles_in_order(player):
     print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
 
     is_won_horizontal = check_circles_in_row_horizontal(player)
     is_won_vertical = check_circles_in_row_vertical(player)
-
-    if is_won_horizontal or is_won_vertical:
-        print(f"{player.color} {player.name} {reset_color} has won the game")
+    is_won_angle = check_circles_in_row_angle(player)
+    if is_won_horizontal or is_won_vertical or is_won_angle:
+        print(
+            f"{green_color}**********{reset_color} {player.color} {player.name} {reset_color} has won the game {green_color}**********{reset_color}"
+        )
         Game.game_is_running = False
 
 
