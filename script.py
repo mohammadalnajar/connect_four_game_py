@@ -359,8 +359,8 @@ def check_circles_in_row_vertical(player):
                         row_dict[circle.letter] = row_dict[circle.letter][
                             row_dict[circle.letter].index(number) + 1 :
                         ]
-                        list_to_compare = letters_list[
-                            letters_list.index(row_dict[circle.letter][0]) :
+                        list_to_compare = numbers_list[
+                            numbers_list.index(row_dict[circle.letter][0]) :
                         ]
                         length = len(row_dict[circle.letter])
                 idx += 1
@@ -372,10 +372,12 @@ def check_circles_in_row_vertical(player):
 
 
 def check_circles_in_row_angle(player):
+    global is_won
     is_won = False
     in_order = True
     in_row = 1
-    circles = []
+
+    player.circles.sort(key=lambda circle: circle.letter)  # sort circles by letter
 
     list_numbers_to_compare = (
         numbers_list[numbers_list.index(player.circles[0].number) :]
