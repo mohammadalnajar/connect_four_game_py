@@ -266,13 +266,16 @@ def check_circles_in_row_horizontal(player):
         row_dict[circle.number].append(circle.letter)
         row_dict[circle.number].sort()
 
+    for circle in player.circles:
         list_to_compare = letters_list[letters_list.index(row_dict[circle.number][0]) :]
-        # print(list_to_compare, "list_to_compare")
 
         if len(row_dict[circle.number]) >= 4:  # check if row has 4 circles or more
             in_order = True
             in_row = 1
-            for idx in range(len(row_dict[circle.number])):
+            global length
+            length = len(row_dict[circle.number])
+            idx = 0
+            while idx < length:
                 letter = row_dict[circle.number][idx]
                 next_letter = (
                     row_dict[circle.number][idx + 1]
@@ -296,6 +299,14 @@ def check_circles_in_row_horizontal(player):
                     else:
                         in_order = False
                         in_row = 1
+                        row_dict[circle.number] = row_dict[circle.number][
+                            row_dict[circle.number].index(letter) + 1 :
+                        ]
+                        list_to_compare = letters_list[
+                            letters_list.index(row_dict[circle.number][0]) :
+                        ]
+                        length = len(row_dict[circle.number])
+                idx += 1
 
             if in_order and in_row >= 4:
                 is_won = True
@@ -365,12 +376,12 @@ def check_circles_in_row_angle(player):
         else []
     )
 
-    print(list_numbers_to_compare, "list_numbers_to_compare")
-    print(list_letters_to_compare, "list_letters_to_compare")
+    # print(list_numbers_to_compare, "list_numbers_to_compare")
+    # print(list_letters_to_compare, "list_letters_to_compare")
 
 
 def check_circles_in_order(player):
-    print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
+    # print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
 
     is_won_horizontal = check_circles_in_row_horizontal(player)
     is_won_vertical = check_circles_in_row_vertical(player)
