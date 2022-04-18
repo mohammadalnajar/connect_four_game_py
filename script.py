@@ -18,9 +18,23 @@ def create_dict():
     return dict
 
 
+def print_divider():
+    print("-" * 60)
+
+
+def clear_screen():
+    print(chr(27) + "[2j")
+    print("\033c")
+    print("\x1bc")
+
+
+clear_screen()
+
+
 class Game:
     turn = 1
     game_is_running = True
+    won_player = None
 
     def __init__(self):
         self.winner = None
@@ -150,10 +164,6 @@ def print_circles():
         print("-" * 60)
 
 
-def print_divider():
-    print("-" * 60)
-
-
 def introduce_players():
     print(
         f"{player_one.color} {player_one.name} {reset_color} and {player_two.color} {player_two.name} {reset_color} are playing the game"
@@ -191,7 +201,7 @@ def select_circle():
     player = player_one if Game.turn == 1 else player_two
 
     letter = input(
-        f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
+        f"{player.color} {player.name} {reset_color}, select a circle (enter letter): "
     )
 
     while True:  # check if column is full
@@ -211,6 +221,11 @@ def select_circle():
 
             circle_letter = letter.upper()
 
+            # check if the input is a number
+            if circle_letter.isnumeric():
+                error["msg"] = "******* Only letters are allowed *******"
+                raise ValueError
+
             # check if the letter is valid
             if circle_letter not in letters_list:
                 error["msg"] = "******* The selected letter is not valid *******"
@@ -227,24 +242,34 @@ def select_circle():
                 error["msg"] = "******* The selected column is full *******"
                 raise ValueError
             else:
-                result = player.add_circle(col_circles[-1])
-                if result:
-                    Game.turn = 2 if Game.turn == 1 else 1
+                added = player.add_circle(
+                    col_circles[-1]
+                )  # add the circle to the player
+                if added:
+                    Game.turn = 2 if Game.turn == 1 else 1  # change turn
                 break
         except ValueError:  # if the column is full
             msg = error["msg"] if "msg" in error else "invalid input"
             print(f"{msg}")
             letter = input(
-                f"{player.color} {player.name} {reset_color}, select a circle (enter letter and number): "
+                f"{player.color} {player.name} {reset_color}, select a circle (enter letter): "
             )
+
+
+def check_for_win():
+
+    if Game.won_player:  # if the game is already won
+        Game.game_is_running = False
+        print(
+            f"{Game.won_player.color} {Game.won_player.name} {reset_color} won the game"
+        )
 
 
 while Game.game_is_running:
     select_circle()
-    print(chr(27) + "[2j")
-    print("\033c")
-    print("\x1bc")
+    clear_screen()
     print_circles()
+    check_for_win()
 
 # restart the game
 # def restart_game():
