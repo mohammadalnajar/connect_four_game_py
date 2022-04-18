@@ -322,13 +322,17 @@ def check_circles_in_row_vertical(player):
             row_dict[circle.letter] = []
         row_dict[circle.letter].append(circle.number)
         row_dict[circle.letter].sort()
+
+    for circle in player.circles:
         list_to_compare = numbers_list[numbers_list.index(row_dict[circle.letter][0]) :]
-        # print(list_to_compare, "list_to_compare")
 
         if len(row_dict[circle.letter]) >= 4:  # check if row has 4 circles or more
             in_order = True
             in_row = 1
-            for idx in range(len(row_dict[circle.letter])):
+            global length
+            length = len(row_dict[circle.letter])
+            idx = 0
+            while idx < length:
                 number = row_dict[circle.letter][idx]
                 next_number = (
                     row_dict[circle.letter][idx + 1]
@@ -352,6 +356,14 @@ def check_circles_in_row_vertical(player):
                     else:
                         in_order = False
                         in_row = 1
+                        row_dict[circle.letter] = row_dict[circle.letter][
+                            row_dict[circle.letter].index(number) + 1 :
+                        ]
+                        list_to_compare = letters_list[
+                            letters_list.index(row_dict[circle.letter][0]) :
+                        ]
+                        length = len(row_dict[circle.letter])
+                idx += 1
 
             if in_order and in_row >= 4:
                 is_won = True
