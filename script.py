@@ -256,8 +256,68 @@ def select_circle():
             )
 
 
+def check_circles_in_row_horizontal(player):
+    row_dict = {}
+    is_won = False
+    for circle in player.circles:
+        if circle.number not in row_dict:
+            row_dict[circle.number] = []
+        row_dict[circle.number].append(circle.letter)
+        row_dict[circle.number].sort()
+
+        list_to_compare = letters_list[letters_list.index(row_dict[circle.number][0]) :]
+        # print(list_to_compare, "list_to_compare")
+
+        if len(row_dict[circle.number]) >= 4:  # check if row has 4 circles or more
+            in_order = True
+            in_row = 1
+            for idx in range(len(row_dict[circle.number])):
+                letter = row_dict[circle.number][idx]
+                next_letter = (
+                    row_dict[circle.number][idx + 1]
+                    if idx + 1 < len(row_dict[circle.number])
+                    else None
+                )
+                letter_to_compare = list_to_compare[idx]
+                next_letter_to_compare = (
+                    list_to_compare[idx + 1] if idx + 1 < len(list_to_compare) else None
+                )
+                if idx < len(row_dict[circle.number]) - 1:
+                    if (
+                        next_letter == next_letter_to_compare
+                        and letter == letter_to_compare
+                    ):
+                        in_order = True
+                        in_row += 1
+                        # if in_row == 4 and in_order
+                        if in_row == 4:
+                            break
+                    else:
+                        in_order = False
+                        in_row = 1
+
+            if in_order and in_row >= 4:
+                is_won = True
+
+    return is_won
+
+
+def check_circles_in_order(player):
+    print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
+
+    is_won_horizontal = check_circles_in_row_horizontal(player)
+
+    if is_won_horizontal:
+        print(f"{player.color} {player.name} {reset_color} has won the game")
+        Game.game_is_running = False
+
+
 def check_for_win():
 
+    check_circles_in_order(player_one)
+    print_divider()
+    check_circles_in_order(player_two)
+    print_divider()
     if Game.won_player:  # if the game is already won
         Game.game_is_running = False
         print(
