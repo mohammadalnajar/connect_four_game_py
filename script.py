@@ -311,7 +311,6 @@ def check_circles_in_row_vertical(player):
             row_dict[circle.letter] = []
         row_dict[circle.letter].append(circle.number)
         row_dict[circle.letter].sort()
-        print(row_dict, "row_dict ver")
         list_to_compare = numbers_list[numbers_list.index(row_dict[circle.letter][0]) :]
         # print(list_to_compare, "list_to_compare")
 
