@@ -6,6 +6,7 @@ yellow_color = "\x1b[6;30;43m"  # yellow color
 blue_color = "\x1b[1;37;44m"  # blue color
 reset_color = "\x1b[0m"  # reset color
 letters_list = ["A", "B", "C", "D", "E", "F", "G"]  # list of letters for columns
+numbers_list = [1, 2, 3, 4, 5, 6]
 
 
 def create_dict():
@@ -302,12 +303,59 @@ def check_circles_in_row_horizontal(player):
     return is_won
 
 
+def check_circles_in_row_vertical(player):
+    row_dict = {}
+    is_won = False
+    for circle in player.circles:
+        if circle.letter not in row_dict:
+            row_dict[circle.letter] = []
+        row_dict[circle.letter].append(circle.number)
+        row_dict[circle.letter].sort()
+        print(row_dict, "row_dict ver")
+        list_to_compare = numbers_list[numbers_list.index(row_dict[circle.letter][0]) :]
+        # print(list_to_compare, "list_to_compare")
+
+        if len(row_dict[circle.letter]) >= 4:  # check if row has 4 circles or more
+            in_order = True
+            in_row = 1
+            for idx in range(len(row_dict[circle.letter])):
+                number = row_dict[circle.letter][idx]
+                next_number = (
+                    row_dict[circle.letter][idx + 1]
+                    if idx + 1 < len(row_dict[circle.letter])
+                    else None
+                )
+                number_to_compare = list_to_compare[idx]
+                next_number_to_compare = (
+                    list_to_compare[idx + 1] if idx + 1 < len(list_to_compare) else None
+                )
+                if idx < len(row_dict[circle.letter]) - 1:
+                    if (
+                        next_number == next_number_to_compare
+                        and number == number_to_compare
+                    ):
+                        in_order = True
+                        in_row += 1
+                        # if in_row == 4 and in_order
+                        if in_row == 4:
+                            break
+                    else:
+                        in_order = False
+                        in_row = 1
+
+            if in_order and in_row >= 4:
+                is_won = True
+
+    return is_won
+
+
 def check_circles_in_order(player):
     print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
 
     is_won_horizontal = check_circles_in_row_horizontal(player)
+    is_won_vertical = check_circles_in_row_vertical(player)
 
-    if is_won_horizontal:
+    if is_won_horizontal or is_won_vertical:
         print(f"{player.color} {player.name} {reset_color} has won the game")
         Game.game_is_running = False
 
