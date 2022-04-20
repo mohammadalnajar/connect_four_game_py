@@ -45,6 +45,7 @@ class Circle:
     def __init__(self, letter, number, row, col) -> None:
         self.letter = letter  # letter
         self.number = number  # number
+        self.str = f"{self.letter}{self.number}"  # string
         self.row = row
         self.col = col
         self.owner = None  # owner of the circle
@@ -375,91 +376,105 @@ def check_circles_in_row_vertical(player):
 def check_circles_in_row_angle(player):
     global is_won
     is_won = False
-    in_order = True
-    in_row = 1
-
     circles = player.circles
     circles.sort(key=lambda circle: circle.letter)  # sort circles by letter
-    print(circles, "=====")
-    list_numbers_to_compare = (
-        numbers_list[numbers_list.index(circles[0].number) :]
-        if len(circles) > 0
-        else []
-    )
-    list_letters_to_compare = (
-        letters_list[letters_list.index(circles[0].letter) :]
-        if len(circles) > 0
-        else []
-    )
+    string_circles = [f"{circle.letter}{circle.number}" for circle in circles]
+    if len(circles) >= 4:
+        for circle in circles:
+            letter = circle.letter
+            number = circle.number
+            global compare_one
+            compare_one = True
+            list_to_compare_1 = []
+            list_to_compare_2 = []
+            global letters_list_to_compare
+            global numbers_list_to_compare
+            if number < 4:
+                numbers_list_to_compare = numbers_list[numbers_list.index(number) :]
+            elif number >= 4:
+                numbers_list_to_compare = numbers_list[::-1]
+                numbers_list_to_compare = numbers_list_to_compare[
+                    numbers_list_to_compare.index(number) :
+                ]
 
-    global length
-    length = len(circles)
-    idx = 0
-    while idx < length:
-        print("====================== begin ======================")
-        print(f"idx: {idx}")
-        circle = circles[idx]
-        next_circle = circles[idx + 1] if idx + 1 < len(circles) else None
-        letter = circle.letter
-        next_letter = next_circle.letter if next_circle else None
-        number = circle.number
-        next_number = next_circle.number if next_circle else None
-        letter_to_compare = list_letters_to_compare[
-            list_letters_to_compare.index(letter)
-        ]
-        next_letter_to_compare = (
-            list_letters_to_compare[list_letters_to_compare.index(letter) + 1]
-            if idx + 1 < len(list_letters_to_compare)
-            else None
-        )
+            # === letter < D ======"
+            if letter < "D":
+                letters_list_to_compare = letters_list[letters_list.index(letter) :]
 
-        print(f"{circle.letter} {next_letter}")
-        print(f"{circle.number} {next_number}")
-        print(f"{letter_to_compare} {next_letter_to_compare}")
+                i = 0
+                while i < 4:
+                    list_to_compare_1.append(
+                        f"{letters_list_to_compare[i]}{numbers_list_to_compare[i]}"
+                    )
+                    i += 1
+            # === letter > D ======
+            if letter > "D":
+                letters_list_to_compare = letters_list[::-1]
+                letters_list_to_compare = letters_list_to_compare[
+                    letters_list_to_compare.index(letter) :
+                ]
 
-        if next_circle == None:
-            print("next circle is none => break")
-            print("====================== end ======================")
-            break
+                i = 0
+                while i < 4:
+                    list_to_compare_1.append(
+                        f"{letters_list_to_compare[i]}{numbers_list_to_compare[i]}"
+                    )
+                    i += 1
 
-        if letter == next_letter:
-            print("letter == next_letter ==> continue")
-            idx += 1
-            continue
+            # === letter == D ======
+            if letter == "D":
 
-        elif number - next_number == -1 or number - next_number == 1:
-            if letter == letter_to_compare and next_letter == next_letter_to_compare:
-                print(
-                    "letter == letter_to_compare and next_letter == next_letter_to_compare ==> in_row += 1"
-                )
-                in_order = True
-                in_row += 1
+                letters_list_to_compare = letters_list[letters_list.index(letter) :]
 
-            else:
-                print("no match ==> in_order = False")
-                in_order = False
-                in_row = 1
-                circles = circles[circles.index(circle) + 1 :]
-                list_letters_to_compare = letters_list[letters_list.index(letter) :]
-                length = len(circles)
-        else:
-            print("number - next_number != -1")
-        if in_row == 4 and in_order:
-            print("in_row == 4 and in_order ==> is_won = True")
-            is_won = True
-            print("WON")
-            break
+                i = 0
+                while i < 4:
+                    list_to_compare_1.append(
+                        f"{letters_list_to_compare[i]}{numbers_list_to_compare[i]}"
+                    )
+                    i += 1
 
-        idx += 1
-        print("====================== end ======================")
-    print(is_won, "is_won")
+                letters_list_to_compare = letters_list[::-1]
+                letters_list_to_compare = letters_list_to_compare[
+                    letters_list_to_compare.index(letter) :
+                ]
+
+                i = 0
+                while i < 4:
+                    list_to_compare_2.append(
+                        f"{letters_list_to_compare[i]}{numbers_list_to_compare[i]}"
+                    )
+                    i += 1
+
+            x = 0
+            global all_in
+            all_in = True
+            while x < len(list_to_compare_1):
+                if not list_to_compare_1[x] in string_circles:
+                    all_in = False
+                    break
+
+                x += 1
+
+            if all_in:
+                is_won = True
+                return is_won
+
+            if len(list_to_compare_2) > 0:
+                y = 0
+                while y < len(list_to_compare_2):
+                    if not list_to_compare_2[y] in string_circles:
+                        all_in = False
+                        break
+
+                    y += 1
+
+            if all_in:
+                is_won = True
+                return is_won
     return is_won
-    # print(list_numbers_to_compare, "list_numbers_to_compare")
-    # print(list_letters_to_compare, "list_letters_to_compare")
 
 
 def check_circles_in_order(player):
-    # print(f"{player.color} {player.name} {reset_color} circles: {player.circles}")
 
     is_won_horizontal = check_circles_in_row_horizontal(player)
     is_won_vertical = check_circles_in_row_vertical(player)
@@ -500,7 +515,7 @@ print_divider()
 print_divider()
 
 
-print(yellow_color + "Warning!" + reset_color)
-print(red_color + "Failure!" + reset_color)
-print(green_color + "Success!" + reset_color)
-print(blue_color + "Information!" + reset_color)
+# print(yellow_color + "Warning!" + reset_color)
+# print(red_color + "Failure!" + reset_color)
+# print(green_color + "Success!" + reset_color)
+# print(blue_color + "Information!" + reset_color)
