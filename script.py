@@ -151,14 +151,14 @@ def print_circles():
         if row == 0:
             for letter in letters_list:
                 if not letter == "A":
-                    str_to_print += " <-> "
+                    str_to_print += " |-| "
                 str_to_print += f"{yellow_color} {letter.upper()}  {reset_color}"
         else:
             idx = 0
             for circle in circles:
                 if circle.row == row:
                     if not idx % 7 == 0:
-                        str_to_print += " <-> "
+                        str_to_print += " |-| "
                     circle_to_print = f"{circle.color} {circle} {reset_color}"
                     str_to_print += circle_to_print
                 idx += 1
@@ -203,7 +203,7 @@ def select_circle():
     player = player_one if Game.turn == 1 else player_two
 
     letter = input(
-        f"{player.color} {player.name} {reset_color}, select a circle (enter letter): "
+        f"{player.color} {player.name} {reset_color}, select a square (enter a letter from A to G): "
     )
 
     while True:  # check if column is full
@@ -216,7 +216,7 @@ def select_circle():
                 except ValueError:  # if the input is not valid
                     print("Please enter a valid circle(enter a letter)")
                     letter = input(
-                        f"{player.color} {player.name} {reset_color}, select a circle (enter a letter): "
+                        f"{player.color} {player.name} {reset_color}, select a square (enter a letter from A to G): "
                     )
 
             error = {}
