@@ -36,6 +36,7 @@ class Game:
     turn = 1
     game_is_running = True
     won_player = None
+    round = 0
 
     def __init__(self):
         self.winner = None
@@ -66,6 +67,10 @@ class Circle:
             )
 
             return False  # failed to set owner
+
+    def reset_owner(self):
+        self.owner = None
+        self.color = blue_color
 
 
 class Player:
@@ -117,6 +122,7 @@ class Player:
         self.color_name = "green" if color == "g" or color == "green" else "red"
         Player.taken_colors.append(self.color_name)
         self.circles = []
+        self.won_games = 0
 
         Player.count += 1
 
@@ -483,7 +489,41 @@ def check_circles_in_order(player):
         print(
             f"{green_color}**********{reset_color} {player.color} {player.name} {reset_color} has won the game {green_color}**********{reset_color}"
         )
-        Game.game_is_running = False
+        Game.won_player = player
+
+
+def reset_circles_table():
+    print("reset")
+    Game.round += 1
+    Game.game_is_running = True
+    Game.won_player.won_games += 1
+    Game.won_player = None
+    for player in players:
+        player.circles = []
+    for circle in circles:
+        circle.reset_owner()
+
+
+# restart the game
+def restart_game():
+    restart = input("Do you want to restart the game? (y/n):   ")
+
+    while True:
+        try:
+            if restart == "y":
+                reset_circles_table()
+                clear_screen()
+                print_results()
+                print_circles()
+                break
+            if restart == "n":
+                print("Thank you for playing!")
+                break
+            else:
+                raise ValueError
+        except ValueError:
+            print("Please enter y or n")
+            restart = input("Do you want to restart the game? (y/n):   ")
 
 
 def check_for_win():
@@ -498,15 +538,22 @@ def check_for_win():
             f"{Game.won_player.color} {Game.won_player.name} {reset_color} won the game"
         )
 
+        restart_game()
+
+
+def print_results():
+    print(
+        f"================== {player_one.color} {player_one.name} {reset_color} {player_one.won_games} - {player_two.won_games} {player_two.color} {player_two.name} {reset_color} =================="
+    )
+    print_divider()
+
 
 while Game.game_is_running:
     select_circle()
     clear_screen()
+    print_results()
     print_circles()
     check_for_win()
-
-# restart the game
-# def restart_game():
 
 
 print_divider()
