@@ -24,12 +24,13 @@
 
 ---
 - Win vertical:
+
+
 ![the game](./gifs/vertical.gif)
 
 
 
 ---
-  
 - Win diagonal:
   
 
@@ -42,6 +43,6 @@
 ![the game](./gifs/validation.gif)
   
 
-
+---
 - Building this small game was really helpful for me to understand a lot of concepts in programming in addition to learning a lot of python.
 
