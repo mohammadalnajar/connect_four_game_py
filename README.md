@@ -22,17 +22,26 @@
 - The game also ends when the board is full and neither player has four in a row.
 - When the game ends, the game can be restarted.
 
-
+---
 - Win vertical:
 ![the game](./gifs/vertical.gif)
 
+
+
+---
   
 - Win diagonal:
+  
+
 ![the game](./gifs/angle.gif)
 
-
+---
 - The game has also validations:
+
+
 ![the game](./gifs/validation.gif)
   
 
+
+- Building this small game was really helpful for me to understand a lot of concepts in programming in addition to learning a lot of python.
 
